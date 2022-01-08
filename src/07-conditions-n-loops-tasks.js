@@ -282,9 +282,23 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const cardNumberArr = String(ccn).split('').reverse();
+  let result = 0;
+
+  for (let i = 0; i < cardNumberArr.length; i += 1) {
+    if (i % 2 === 0) {
+      result += +cardNumberArr[i];
+    } else if (cardNumberArr[i] * 2 > 9) {
+      result += cardNumberArr[i] * 2 - 9;
+    } else {
+      result += cardNumberArr[i] * 2;
+    }
+  }
+
+  return result % 10 === 0;
 }
+
 
 /**
  * Returns the digital root of integer:
@@ -330,8 +344,11 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const brackets = ['[]', '{}', '()', '<>'];
+  return brackets.some((elem) => str.includes(elem))
+    ? isBracketsBalanced(brackets.reduce((acc, elem) => acc.replace(elem, ''), str))
+    : str === '';
 }
 
 
@@ -372,10 +389,18 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let result = '';
+  for (let i = 0; i < pathes[0].length; i += 1) {
+    const letter = pathes[0][i];
+    if (pathes.every((elem) => elem[i] === letter)) {
+      result += letter;
+    } else {
+      break;
+    }
+  }
+  return result.slice(0, result.lastIndexOf('/') + 1);
 }
-
 
 /**
  * Returns the product of two specified matrixes.
